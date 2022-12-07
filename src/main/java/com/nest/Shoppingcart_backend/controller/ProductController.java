@@ -3,12 +3,10 @@ package com.nest.Shoppingcart_backend.controller;
 import com.nest.Shoppingcart_backend.dao.ProductDao;
 import com.nest.Shoppingcart_backend.model.Products;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @RestController
 public class ProductController {
@@ -27,4 +25,10 @@ public class ProductController {
         map.put("status","success");
         return map;
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping(path="/viewall")
+    public List<Products> ViewAllProduct(){
+        return (List<Products>) dao.findAll();
+    }
+
 }
