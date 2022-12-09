@@ -33,12 +33,38 @@ private UsersDao dao;
     }
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/usersearch",consumes ="application/json",produces ="application/json")
-    public List<Users> SearchUser(@RequestBody Users u)
+    public Map<String,String> SearchUser(@RequestBody Users u)
     {
         String email=u.getEmail().toString();
         String password=u.getPassword().toString();
         System.out.println(email);
         System.out.println(password);
-        return (List<Users>) dao.SearchUser(u.getEmail(),u.getPassword());
+        List<Users> result= (List<Users>) dao.SearchUser(u.getEmail(),u.getPassword());
+        HashMap<String,String> st=new HashMap<>();
+        if(result.size()==0)
+        {
+            st.put("status","failed");
+            st.put("message","user doesn't exist");
+        }
+        else{
+            int id =result.get(0).getId();
+            st.put("userid",String.valueOf(id));
+            st.put("status","success");
+            st.put("message","user login success");
+        }
+        return st;
+
     }
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/viewprofile",consumes = "application/json",produces = "application/json")
+    public List<Users> ViewProfile(@RequestBody Users u) {
+        String id=String.valueOf(u.getId());
+        System.out.println(id);
+        return (List<Users>) dao.ViewProfile(u.getId());
+
+
+    }
+
+
+
 }
